@@ -1,0 +1,77 @@
+  datasource db {
+    provider = "postgresql"
+  }
+
+  generator client {
+    provider = "prisma-client-js"
+  }
+
+  model Perfume {
+    id            Int               @id @default(autoincrement())
+    name          String
+    brand         String
+    country       String?
+    gender        String?
+    year          Int?
+    ratingValue   Float?
+    ratingCount   Int?
+    perfumer1     String?
+    perfumer2     String?
+    notes         PerfumeNote[]
+    accords       PerfumeAccord[]
+    collection    CollectionEntry[]
+  }
+
+  model Note {
+    id       Int           @id @default(autoincrement())
+    name     String        @unique
+    perfumes PerfumeNote[]
+  }
+
+  model PerfumeNote {
+    perfume   Perfume  @relation(fields: [perfumeId], references: [id])
+    perfumeId Int
+    note      Note     @relation(fields: [noteId], references: [id])
+    noteId    Int
+    layer     String
+
+    @@id([perfumeId, noteId, layer])
+  }
+
+  model Accord {
+    id       Int             @id @default(autoincrement())
+    name     String          @unique
+    perfumes PerfumeAccord[]
+  }
+
+  model PerfumeAccord {
+    perfume   Perfume @relation(fields: [perfumeId], references: [id])
+    perfumeId Int
+    accord    Accord  @relation(fields: [accordId], references: [id])
+    accordId  Int
+    rank      Int
+
+    @@id([perfumeId, accordId])
+  }
+
+  model User {
+    id         Int               @id @default(autoincrement())
+    email      String            @unique
+    password   String
+    collection CollectionEntry[]
+    createdAt  DateTime          @default(now())
+  }
+
+  model CollectionEntry {
+    id        Int      @id @default(autoincrement())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    Int
+    perfume   Perfume  @relation(fields: [perfumeId], references: [id])
+    perfumeId Int
+    status    String
+    rating    Float?
+    notes     String?
+    createdAt DateTime @default(now())
+
+    @@unique([userId, perfumeId])
+  }

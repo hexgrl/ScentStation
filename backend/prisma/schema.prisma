@@ -54,13 +54,13 @@
     @@id([perfumeId, accordId])
   }
 
-  model User {
-    id         Int               @id @default(autoincrement())
-    email      String            @unique
-    password   String
-    collection CollectionEntry[]
-    createdAt  DateTime          @default(now())
-  }
+model User {
+  id         Int               @id @default(autoincrement())
+  email      String            @unique
+  googleId   String            @unique
+  collection CollectionEntry[]
+  createdAt  DateTime          @default(now())
+}
 
   model CollectionEntry {
     id        Int      @id @default(autoincrement())

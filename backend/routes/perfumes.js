@@ -1,13 +1,7 @@
 import express from 'express'
-import { PrismaClient } from '@prisma/client'
-import { PrismaNeon } from '@prisma/adapter-neon'
-import dotenv from 'dotenv'
-
-dotenv.config()
+import { prisma } from '../lib/prisma.js'
 
 const router = express.Router()
-const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL })
-const prisma = new PrismaClient({ adapter })
 
 router.get('/', async (req, res) => {
   try {

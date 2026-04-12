@@ -60,9 +60,7 @@ export default function Browse() {
               <h2>{perfume.name}</h2>
               <p>{perfume.brand}</p>
               {perfume.accords.length > 0 && (
-                <span className="accord">
-                  {perfume.accords[0].accord.name}
-                </span>
+                <span className="accord">{perfume.accords[0].accord.name}</span>
               )}
             </div>
           </div>

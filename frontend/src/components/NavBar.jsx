@@ -1,0 +1,21 @@
+import { useAuth } from "../context/AuthContext";
+
+export default function NavBar() {
+  const { user, logout } = useAuth();
+
+  return (
+    <nav className="navbar">
+      <span className="navbar-brand">ScentStation</span>
+      <div className="navbar-auth">
+        {user === undefined ? null : user ? (
+          <>
+            <span>{user.email}</span>
+            <button onClick={logout}>Log out</button>
+          </>
+        ) : (
+          <a href="http://localhost:3001/auth/google">Log in with Google</a>
+        )}
+      </div>
+    </nav>
+  );
+}

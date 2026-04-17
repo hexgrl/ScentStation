@@ -1,4 +1,5 @@
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 export default function NavBar() {
   const { user, logout } = useAuth();
@@ -9,6 +10,7 @@ export default function NavBar() {
       <div className="navbar-auth">
         {user === undefined ? null : user ? (
           <>
+            <Link to="/collection">Collection</Link>
             <span>{user.email}</span>
             <button onClick={logout}>Log out</button>
           </>

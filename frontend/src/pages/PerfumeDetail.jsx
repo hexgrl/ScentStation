@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function PerfumeDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [perfume, setPerfume] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [collectionStatus, setCollectionStatus] = useState(null);
+  const [collectionLoading, setCollectionLoading] = useState(false);
 
   useEffect(() => {
     const fetchPerfume = async () => {
@@ -23,6 +27,50 @@ export default function PerfumeDetail() {
     fetchPerfume();
   }, [id]);
 
+  useEffect(() => {
+    if (!user) return;
+    const fetchCollection = async () => {
+      try {
+        const res = await fetch("http://localhost:3001/api/collection", {
+          credentials: "include",
+        });
+        const data = await res.json();
+        const match = data.find((e) => e.perfumeId === Number(id));
+        setCollectionStatus(match ? match.status : null);
+      } catch {
+        setCollectionStatus(null);
+      }
+    };
+    fetchCollection();
+  }, [user, id]);
+
+  const handleCollection = async (status) => {
+    if (collectionLoading) return;
+    setCollectionLoading(true);
+    try {
+      if (collectionStatus === status) {
+        await fetch(`http://localhost:3001/api/collection/${id}`, {
+          method: "DELETE",
+          credentials: "include",
+        });
+        setCollectionStatus(null);
+      } else {
+        const res = await fetch("http://localhost:3001/api/collection", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ perfumeId: Number(id), status }),
+        });
+        const data = await res.json();
+        setCollectionStatus(data.status);
+      }
+    } catch {
+      // handle silently for now
+    } finally {
+      setCollectionLoading(false);
+    }
+  };
+
   if (loading) return <div className="detail">Loading...</div>;
   if (error) return <div className="detail">{error}</div>;
   if (!perfume) return <div className="detail">Not found</div>;
@@ -36,6 +84,23 @@ export default function PerfumeDetail() {
       <button onClick={() => navigate(-1)}>← Back</button>
       <h1>{perfume.name}</h1>
       <h2>{perfume.brand}</h2>
+
+      {user && (
+        <div className="collection-actions">
+          <button
+            onClick={() => handleCollection("owned")}
+            disabled={collectionLoading}
+          >
+            {collectionStatus === "owned" ? "✓ Owned" : "Add to Owned"}
+          </button>
+          <button
+            onClick={() => handleCollection("wishlisted")}
+            disabled={collectionLoading}
+          >
+            {collectionStatus === "wishlisted" ? "✓ Wishlisted" : "Wishlist"}
+          </button>
+        </div>
+      )}
 
       <div className="meta">
         {perfume.gender && <span>{perfume.gender}</span>}

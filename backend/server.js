@@ -7,6 +7,7 @@ import dotenv from 'dotenv'
 import { prisma } from './lib/prisma.js'
 import perfumeRoutes from './routes/perfumes.js'
 import authRoutes from './routes/auth.js'
+import collectionRoutes from './routes/collection.js'
 
 dotenv.config()
 console.log('CLIENT_ID:', process.env.GOOGLE_CLIENT_ID)
@@ -61,6 +62,7 @@ passport.deserializeUser(async (id, done) => {
 
 app.use('/api/perfumes', perfumeRoutes)
 app.use('/auth', authRoutes)
+app.use('/api/collection', collectionRoutes)
 
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err)

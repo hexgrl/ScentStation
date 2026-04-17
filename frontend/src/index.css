@@ -159,3 +159,10 @@ button:disabled {
   font-size: 0.8rem;
   color: #ddd;
 }
+
+.navbar-auth {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+

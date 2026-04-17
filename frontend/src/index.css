@@ -6,7 +6,7 @@
 
 body {
   font-family: sans-serif;
-  background: #0f0f0f;
+  background: #072327;
   color: #f0f0f0;
 }
 
@@ -38,7 +38,7 @@ input {
 }
 
 .card {
-  background: #1a1a1a;
+  background: #3a4668;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
@@ -166,3 +166,8 @@ button:disabled {
   align-items: center;
 }
 
+.collection-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}

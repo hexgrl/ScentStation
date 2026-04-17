@@ -6,7 +6,7 @@ const router = express.Router()
 router.get('/', async (req, res) => {
   try {
     const { search, accord, gender, page = 1 } = req.query
-    const take = 24
+    const take = 20
     const skip = (page - 1) * take
 
     const where = {

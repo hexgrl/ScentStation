@@ -65,7 +65,6 @@ export default function PerfumeDetail() {
         setCollectionStatus(data.status);
       }
     } catch {
-      // handle silently for now
     } finally {
       setCollectionLoading(false);
     }
@@ -81,26 +80,28 @@ export default function PerfumeDetail() {
 
   return (
     <div className="detail">
-      <button onClick={() => navigate(-1)}>← Back</button>
+      <div className="detail-actions">
+        <button onClick={() => navigate(-1)}>← Back</button>
+        {user && (
+          <>
+            <button
+              onClick={() => handleCollection("owned")}
+              disabled={collectionLoading}
+            >
+              {collectionStatus === "owned" ? "✓ Owned" : "Add to Owned"}
+            </button>
+            <button
+              onClick={() => handleCollection("wishlisted")}
+              disabled={collectionLoading}
+            >
+              {collectionStatus === "wishlisted" ? "✓ Wishlisted" : "Wishlist"}
+            </button>
+          </>
+        )}
+      </div>
+
       <h1>{perfume.name}</h1>
       <h2>{perfume.brand}</h2>
-
-      {user && (
-        <div className="collection-actions">
-          <button
-            onClick={() => handleCollection("owned")}
-            disabled={collectionLoading}
-          >
-            {collectionStatus === "owned" ? "✓ Owned" : "Add to Owned"}
-          </button>
-          <button
-            onClick={() => handleCollection("wishlisted")}
-            disabled={collectionLoading}
-          >
-            {collectionStatus === "wishlisted" ? "✓ Wishlisted" : "Wishlist"}
-          </button>
-        </div>
-      )}
 
       <div className="meta">
         {perfume.gender && <span>{perfume.gender}</span>}
@@ -108,8 +109,7 @@ export default function PerfumeDetail() {
         {perfume.country && <span>{perfume.country}</span>}
         {perfume.ratingValue && (
           <span>
-            ⭐ {perfume.ratingValue} ({perfume.ratingCount?.toLocaleString()}{" "}
-            ratings)
+            ⭐ {perfume.ratingValue} ({perfume.ratingCount?.toLocaleString()} ratings)
           </span>
         )}
       </div>

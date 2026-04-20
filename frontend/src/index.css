@@ -108,6 +108,11 @@ button:disabled {
   cursor: default;
 }
 
+button:hover:not(:disabled) {
+  background: #3a3a3a;
+  border-color: #666;
+}
+
 .detail {
   max-width: 800px;
   margin: 0 auto;
@@ -123,6 +128,17 @@ button:disabled {
   font-size: 1.1rem;
   color: #aaa;
   margin-bottom: 1rem;
+}
+
+.detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 5rem;
+}
+
+.detail-actions button:nth-child(2) {
+  margin-left: auto;
 }
 
 .meta {

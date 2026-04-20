@@ -1,14 +1,17 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import accordImages from "../components/accordImages";
 
 export default function Browse() {
   const [perfumes, setPerfumes] = useState([]);
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const page = Number(searchParams.get("page") ?? 1);
+  const search = searchParams.get("search") ?? "";
 
   useEffect(() => {
     const fetchPerfumes = async () => {
@@ -32,8 +35,11 @@ export default function Browse() {
   }, [search, page]);
 
   const handleSearch = (e) => {
-    setSearch(e.target.value);
-    setPage(1);
+    setSearchParams({ search: e.target.value, page: 1 });
+  };
+
+  const handlePage = (newPage) => {
+    setSearchParams({ search, page: newPage });
   };
 
   return (
@@ -55,7 +61,12 @@ export default function Browse() {
             key={perfume.id}
             className="card"
             onClick={() => navigate(`/perfume/${perfume.id}`)}>
-            <div className="card-image-placeholder" />
+            <div
+              className="card-image"
+              style={{
+                backgroundImage: `url(/accords/${accordImages[perfume.accords[0]?.accord.name.toLowerCase()] ?? accordImages.default})`,
+              }}
+            />
             <div className="card-info">
               <h2>{perfume.name}</h2>
               <p>{perfume.brand}</p>
@@ -68,15 +79,13 @@ export default function Browse() {
       </div>
 
       <div className="pagination">
-        <button onClick={() => setPage((p) => p - 1)} disabled={page === 1}>
+        <button onClick={() => handlePage(page - 1)} disabled={page === 1}>
           Prev
         </button>
         <span>
           {page} / {totalPages}
         </span>
-        <button
-          onClick={() => setPage((p) => p + 1)}
-          disabled={page === totalPages}>
+        <button onClick={() => handlePage(page + 1)} disabled={page === totalPages}>
           Next
         </button>
       </div>

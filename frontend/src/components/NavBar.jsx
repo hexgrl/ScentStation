@@ -6,7 +6,7 @@ export default function NavBar() {
 
   return (
     <nav className="navbar">
-      <span className="navbar-brand">ScentStation</span>
+      <Link to="/" className="navbar-brand">ScentStation</Link>
       <div className="navbar-auth">
         {user === undefined ? null : user ? (
           <>

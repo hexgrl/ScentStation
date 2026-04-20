@@ -1,0 +1,25 @@
+const accordImages = {
+  amber: "amber.jpg",
+  aquatic: "aquatic.jpg",
+  aromatic: "aromatic.jpg",
+  citrus: "citrus.jpg",
+  floral: "floral.jpg",
+  fresh: "fresh.jpg",
+  "fresh spicy": "fresh-spicy.jpg",
+  fruity: "fruity.jpg",
+  green: "green.jpg",
+  leather: "leather.jpg",
+  marine: "marine.jpg",
+  musky: "musky.jpg",
+  oud: "oud.jpg",
+  powdery: "powdery.jpg",
+  rose: "rose.jpg",
+  sweet: "sweet.jpg",
+  vanilla: "vanilla.jpg",
+  "warm spicy": "warm-spicy.jpg",
+  "white floral": "white-floral.jpg",
+  woody: "woody.jpg",
+  default: "default.jpg",
+};
+
+export default accordImages;

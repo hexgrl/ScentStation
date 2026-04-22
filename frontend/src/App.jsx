@@ -9,6 +9,18 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <div className="blob-cont">
+          <div className="blob b1" />
+          <div className="blob b2" />
+          <div className="blob b3" />
+        </div>
+        <svg style={{ display: "none" }}>
+          <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+            <feBlend in="SourceGraphic" in2="noise" mode="overlay" />
+          </filter>
+        </svg>
         <NavBar />
         <Routes>
           <Route path="/" element={<Browse />} />

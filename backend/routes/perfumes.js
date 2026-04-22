@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
   try {
-    const { search, accord, gender, page = 1 } = req.query
+    const { search, accord, note, gender, page = 1 } = req.query
     const take = 20
     const skip = (page - 1) * take
 
@@ -21,6 +21,13 @@ router.get('/', async (req, res) => {
         accords: {
           some: {
             accord: { name: { equals: accord, mode: 'insensitive' } }
+          }
+        }
+      }),
+      ...(note && {
+        notes: {
+          some: {
+            note: { name: { equals: note, mode: 'insensitive' } }
           }
         }
       })
@@ -56,6 +63,42 @@ router.get('/:id', async (req, res) => {
 
     if (!perfume) return res.status(404).json({ error: 'Not found' })
     res.json(perfume)
+  } catch (err) {
+    res.status(500).json({ error: 'Internal server error' })
+  }
+})
+
+router.get('/:id/similar', async (req, res) => {
+  try {
+    const id = Number(req.params.id)
+
+    const perfume = await prisma.perfume.findUnique({
+      where: { id },
+      include: {
+        accords: { include: { accord: true }, orderBy: { rank: 'asc' } }
+      }
+    })
+
+    if (!perfume) return res.status(404).json({ error: 'Not found' })
+
+    const topAccordIds = perfume.accords.slice(0, 3).map(a => a.accordId)
+
+    const similar = await prisma.perfume.findMany({
+      where: {
+        id: { not: id },
+        accords: {
+          some: {
+            accordId: { in: topAccordIds }
+          }
+        }
+      },
+      include: {
+        accords: { include: { accord: true }, orderBy: { rank: 'asc' } }
+      },
+      take: 6
+    })
+
+    res.json(similar)
   } catch (err) {
     res.status(500).json({ error: 'Internal server error' })
   }

@@ -44,7 +44,6 @@ export default function Browse() {
 
   return (
     <div className="browse">
-      <h1>ScentStation</h1>
       <input
         type="text"
         placeholder="Search perfumes or brands..."

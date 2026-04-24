@@ -150,24 +150,81 @@ a {
 }
 
 @keyframes b1move {
-  0%   { top: 30%; left: -5%; transform: scale(1); }
-  33%  { top: 10%; left: 40%; transform: scale(1.1); }
-  66%  { top: 60%; left: 55%; transform: scale(0.95); }
-  100% { top: 30%; left: -5%; transform: scale(1); }
+  0% {
+    top: 30%;
+    left: -5%;
+    transform: scale(1);
+  }
+
+  33% {
+    top: 10%;
+    left: 40%;
+    transform: scale(1.1);
+  }
+
+  66% {
+    top: 60%;
+    left: 55%;
+    transform: scale(0.95);
+  }
+
+  100% {
+    top: 30%;
+    left: -5%;
+    transform: scale(1);
+  }
 }
 
 @keyframes b2move {
-  0%   { top: -10%; right: -5%; transform: scale(1.1); }
-  33%  { top: 50%; right: 40%; transform: scale(1); }
-  66%  { top: 20%; right: 60%; transform: scale(1.2); }
-  100% { top: -10%; right: -5%; transform: scale(1.1); }
+  0% {
+    top: -10%;
+    right: -5%;
+    transform: scale(1.1);
+  }
+
+  33% {
+    top: 50%;
+    right: 40%;
+    transform: scale(1);
+  }
+
+  66% {
+    top: 20%;
+    right: 60%;
+    transform: scale(1.2);
+  }
+
+  100% {
+    top: -10%;
+    right: -5%;
+    transform: scale(1.1);
+  }
 }
 
 @keyframes b3move {
-  0%   { bottom: -10%; right: 15%; transform: scale(1); }
-  33%  { bottom: 40%; right: 55%; transform: scale(1.2); }
-  66%  { bottom: 20%; right: 5%; transform: scale(0.9); }
-  100% { bottom: -10%; right: 15%; transform: scale(1); }
+  0% {
+    bottom: -10%;
+    right: 15%;
+    transform: scale(1);
+  }
+
+  33% {
+    bottom: 40%;
+    right: 55%;
+    transform: scale(1.2);
+  }
+
+  66% {
+    bottom: 20%;
+    right: 5%;
+    transform: scale(0.9);
+  }
+
+  100% {
+    bottom: -10%;
+    right: 15%;
+    transform: scale(1);
+  }
 }
 
 
@@ -350,10 +407,120 @@ input:focus {
   border-radius: 20px;
   font-size: 0.8rem;
   color: #ddd;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.tag:hover {
+  border-color: #555;
+  color: var(--text);
 }
 
 .collection-tabs {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1rem;
+}
+
+.collection-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.collection-page h1 {
+  font-size: 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.collection-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.collection-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.collection-item a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.collection-item strong {
+  font-size: 0.95rem;
+}
+
+.collection-item span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.collection-item>button {
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.collection-item>button:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.collection-tabs button {
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.collection-tabs button.active {
+  border-color: #555;
+  color: var(--text);
+  background: var(--surface);
+}
+
+.active-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.6rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.active-filter button {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1;
+}
+
+.active-filter button:hover {
+  color: var(--text);
+}
+
+.error {
+  color: var(--red);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 0.85rem;
 }

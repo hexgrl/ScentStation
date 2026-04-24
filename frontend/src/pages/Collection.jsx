@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import API from "../lib/api";
 
 export default function Collection() {
   const { user } = useAuth();
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [removeError, setRemoveError] = useState(null);
   const [activeTab, setActiveTab] = useState("owned");
 
   useEffect(() => {
     if (!user) return;
-    fetch("http://localhost:3001/api/collection", { credentials: "include" })
+    fetch(`${API}/api/collection`, { credentials: "include" })
       .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch collection");
+        if (!res.ok) throw new Error("Failed to fetch collection.");
         return res.json();
       })
       .then((data) => {
@@ -26,26 +28,30 @@ export default function Collection() {
       });
   }, [user]);
 
-  function handleRemove(perfumeId) {
-    fetch(`http://localhost:3001/api/collection/${perfumeId}`, {
-      method: "DELETE",
-      credentials: "include",
-    }).then((res) => {
-      if (res.ok) {
-        setEntries((prev) => prev.filter((e) => e.perfumeId !== perfumeId));
-      }
-    });
+  async function handleRemove(perfumeId) {
+    setRemoveError(null);
+    try {
+      const res = await fetch(`${API}/api/collection/${perfumeId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed to remove item.");
+      setEntries((prev) => prev.filter((e) => e.perfumeId !== perfumeId));
+    } catch (err) {
+      setRemoveError(err.message);
+    }
   }
 
   if (!user) return <p>Please log in to view your collection.</p>;
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <p>{error}</p>;
 
   const filtered = entries.filter((e) => e.status === activeTab);
 
   return (
     <div className="collection-page">
       <h1>My Collection</h1>
+      {removeError && <p className="error">{removeError}</p>}
       <div className="collection-tabs">
         <button
           className={activeTab === "owned" ? "active" : ""}

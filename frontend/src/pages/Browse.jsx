@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import accordImages from "../components/accordImages";
+import API from "../lib/api";
 
 export default function Browse() {
   const [perfumes, setPerfumes] = useState([]);
@@ -12,6 +13,8 @@ export default function Browse() {
 
   const page = Number(searchParams.get("page") ?? 1);
   const search = searchParams.get("search") ?? "";
+  const accord = searchParams.get("accord") ?? "";
+  const note = searchParams.get("note") ?? "";
 
   useEffect(() => {
     const fetchPerfumes = async () => {
@@ -20,36 +23,61 @@ export default function Browse() {
       try {
         const params = new URLSearchParams({ page });
         if (search) params.set("search", search);
-        const res = await fetch(`http://localhost:3001/api/perfumes?${params}`);
+        if (accord) params.set("accord", accord);
+        if (note) params.set("note", note);
+        const res = await fetch(`${API}/api/perfumes?${params}`);
+        if (!res.ok) throw new Error("Failed to load perfumes.");
         const data = await res.json();
         setPerfumes(data.perfumes);
         setTotalPages(data.pages);
-      } catch {
-        setError("Failed to load perfumes.");
+      } catch (err) {
+        setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchPerfumes();
-  }, [search, page]);
+  }, [search, accord, note, page]);
 
   const handleSearch = (e) => {
     setSearchParams({ search: e.target.value, page: 1 });
   };
 
   const handlePage = (newPage) => {
-    setSearchParams({ search, page: newPage });
+    const next = { page: newPage };
+    if (search) next.search = search;
+    if (accord) next.accord = accord;
+    if (note) next.note = note;
+    setSearchParams(next);
   };
 
   return (
     <div className="browse">
-      <input
-        type="text"
-        placeholder="Search perfumes or brands..."
-        value={search}
-        onChange={handleSearch}
-      />
+      <div className="browse-filters">
+        <input
+          type="text"
+          placeholder="Search perfumes or brands..."
+          value={search}
+          onChange={handleSearch}
+        />
+        {accord && (
+          <span className="active-filter">
+            Accord: {accord}
+            <button onClick={() => setSearchParams({ page: 1, ...(note && { note }) })}>
+              ✕
+            </button>
+          </span>
+        )}
+        {note && (
+          <span className="active-filter">
+            Note: {note}
+            <button onClick={() => setSearchParams({ page: 1, ...(accord && { accord }) })}>
+              ✕
+            </button>
+          </span>
+        )}
+      </div>
 
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}

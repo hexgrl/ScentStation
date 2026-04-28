@@ -15,18 +15,17 @@ Some fragrance apps are notoriously difficult to use. ScentStation aims to be a 
 - Browse ~24k perfumes sourced from a Fragrantica/Kaggle dataset
 - Search and filter by name, notes, and accords
 - Perfume detail pages
-- User authentication (in progress)
-- Personal collection tracking — owned and wishlisted perfumes (planned)
-- Perfume images via Unsplash API (planned)
+- User authentication
+- Personal collection tracking — owned and wishlisted perfumes 
 
-## Getting Started
+
 
 ### Prerequisites
 
 - Node.js
 - A PostgreSQL database (project uses Neon)
 
-### Setup
+## Getting Started
 
 1. Clone the repo
 2. Install dependencies in both frontend and backend:
@@ -57,7 +56,7 @@ cd frontend && npm run dev
 
 ## Project Status
 
-Active development. Auth and collection features are in progress.
+Feature-complete portfolio build. Includes Google OAuth authentication, perfume browsing/filtering, and personal collection tracking (owned + wishlist).
 
 ## Author
 

@@ -6,6 +6,7 @@ import API from "../lib/api";
 export default function Browse() {
   const [perfumes, setPerfumes] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
+  const [jumpPage, setJumpPage] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -106,16 +107,33 @@ export default function Browse() {
       </div>
 
       <div className="pagination">
-        <button onClick={() => handlePage(page - 1)} disabled={page === 1}>
-          Prev
-        </button>
-        <span>
-          {page} / {totalPages}
-        </span>
-        <button onClick={() => handlePage(page + 1)} disabled={page === totalPages}>
-          Next
-        </button>
-      </div>
+  <button onClick={() => handlePage(page - 1)} disabled={page === 1}>
+    Prev
+  </button>
+  <span>
+    {page} / {totalPages}
+  </span>
+  <button onClick={() => handlePage(page + 1)} disabled={page === totalPages}>
+    Next
+  </button>
+  <input
+    type="number"
+    min={1}
+    max={totalPages}
+    value={jumpPage}
+    onChange={(e) => setJumpPage(e.target.value)}
+    onKeyDown={(e) => {
+      if (e.key === 'Enter') {
+        const p = Number(jumpPage)
+        if (p >= 1 && p <= totalPages) {
+          handlePage(p)
+          setJumpPage('')
+        }
+      }
+    }}
+    placeholder="Go to page..."
+  />
+</div>
     </div>
   );
 }

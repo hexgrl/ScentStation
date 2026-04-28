@@ -1,9 +1,10 @@
 import express from 'express'
 import { prisma } from '../lib/prisma.js'
+import { calculatePages } from '../utils/pagination.js'
 
 const router = express.Router()
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const { search, accord, note, gender, page = 1 } = req.query
     const take = 20
@@ -45,13 +46,13 @@ router.get('/', async (req, res) => {
       prisma.perfume.count({ where })
     ])
 
-    res.json({ perfumes, total, page: Number(page), pages: Math.ceil(total / take) })
+    res.json({ perfumes, total, page: Number(page), pages: calculatePages(total, take) })
   } catch (err) {
-    res.status(500).json({ error: 'Internal server error' })
+    next(err)
   }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const perfume = await prisma.perfume.findUnique({
       where: { id: Number(req.params.id) },
@@ -64,11 +65,11 @@ router.get('/:id', async (req, res) => {
     if (!perfume) return res.status(404).json({ error: 'Not found' })
     res.json(perfume)
   } catch (err) {
-    res.status(500).json({ error: 'Internal server error' })
+    next(err)
   }
 })
 
-router.get('/:id/similar', async (req, res) => {
+router.get('/:id/similar', async (req, res, next) => {
   try {
     const id = Number(req.params.id)
 
@@ -100,7 +101,7 @@ router.get('/:id/similar', async (req, res) => {
 
     res.json(similar)
   } catch (err) {
-    res.status(500).json({ error: 'Internal server error' })
+    next(err)
   }
 })
 

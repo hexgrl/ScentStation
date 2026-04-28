@@ -8,7 +8,7 @@ function requireAuth(req, res, next) {
   next()
 }
 
-router.get('/', requireAuth, async (req, res) => {
+router.get('/', requireAuth, async (req, res, next) => {
   try {
     const entries = await prisma.collectionEntry.findMany({
       where: { userId: req.user.id },
@@ -22,11 +22,11 @@ router.get('/', requireAuth, async (req, res) => {
     })
     res.json(entries)
   } catch (err) {
-    res.status(500).json({ error: 'Internal server error' })
+    next(err)
   }
 })
 
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', requireAuth, async (req, res, next) => {
   try {
     const { perfumeId, status } = req.body
     const entry = await prisma.collectionEntry.upsert({
@@ -36,11 +36,11 @@ router.post('/', requireAuth, async (req, res) => {
     })
     res.json(entry)
   } catch (err) {
-    res.status(500).json({ error: 'Internal server error' })
+    next(err)
   }
 })
 
-router.delete('/:perfumeId', requireAuth, async (req, res) => {
+router.delete('/:perfumeId', requireAuth, async (req, res, next) => {
   try {
     await prisma.collectionEntry.delete({
       where: {
@@ -52,7 +52,7 @@ router.delete('/:perfumeId', requireAuth, async (req, res) => {
     })
     res.json({ success: true })
   } catch (err) {
-    res.status(500).json({ error: 'Internal server error' })
+    next(err)
   }
 })
 

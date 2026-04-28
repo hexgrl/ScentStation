@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "test": "vitest",
-    "dev": "node server.js"
-  },
+ "scripts": {
+  "test": "vitest",
+  "dev": "node server.js",
+  "start": "node server.js"
+},
   "prisma": {
     "seed": "node prisma/seed.js"
   },

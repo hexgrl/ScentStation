@@ -7,7 +7,8 @@
  "scripts": {
   "test": "vitest",
   "dev": "node server.js",
-  "start": "node server.js"
+  "start": "node server.js",
+  "postinstall": "prisma generate"
 },
   "prisma": {
     "seed": "node prisma/seed.js"

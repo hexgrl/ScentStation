@@ -1,6 +1,8 @@
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
+const API = import.meta.env.VITE_API_URL ?? "http://localhost:3001";
+
 export default function NavBar() {
   const { user, logout } = useAuth();
 
@@ -15,7 +17,7 @@ export default function NavBar() {
             <button onClick={logout}>Log out</button>
           </>
         ) : (
-          <a href="http://localhost:3001/auth/google">Log in with Google</a>
+          <a href={`${API}/auth/google`}>Log in with Google</a>
         )}
       </div>
     </nav>

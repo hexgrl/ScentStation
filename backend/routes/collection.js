@@ -1,12 +1,8 @@
 import express from 'express'
 import { prisma } from '../lib/prisma.js'
+import { requireAuth } from '../middleware/auth.js'
 
 const router = express.Router()
-
-function requireAuth(req, res, next) {
-  if (!req.user) return res.status(401).json({ error: 'Not logged in' })
-  next()
-}
 
 router.get('/', requireAuth, async (req, res, next) => {
   try {

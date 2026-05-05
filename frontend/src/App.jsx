@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import Browse from "./pages/Browse.jsx";
 import PerfumeDetail from "./pages/PerfumeDetail.jsx";
 import Collection from "./pages/Collection.jsx";
+import AuthCallback from "./pages/AuthCallback.jsx";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/" element={<Browse />} />
           <Route path="/perfume/:id" element={<PerfumeDetail />} />
           <Route path="/collection" element={<Collection />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

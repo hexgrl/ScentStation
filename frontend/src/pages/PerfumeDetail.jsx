@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth, authHeaders } from "../context/AuthContext";
 import API from "../lib/api";
 
 export default function PerfumeDetail() {
@@ -54,7 +54,7 @@ export default function PerfumeDetail() {
     const fetchCollection = async () => {
       try {
         const res = await fetch(`${API}/api/collection`, {
-          credentials: "include",
+          headers: { ...authHeaders() },
         });
         if (!res.ok) throw new Error();
         const data = await res.json();
@@ -75,15 +75,14 @@ export default function PerfumeDetail() {
       if (collectionStatus === status) {
         const res = await fetch(`${API}/api/collection/${id}`, {
           method: "DELETE",
-          credentials: "include",
+          headers: { ...authHeaders() },
         });
         if (!res.ok) throw new Error("Failed to update collection.");
         setCollectionStatus(null);
       } else {
         const res = await fetch(`${API}/api/collection`, {
           method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...authHeaders() },
           body: JSON.stringify({ perfumeId: Number(id), status }),
         });
         if (!res.ok) throw new Error("Failed to update collection.");
@@ -111,14 +110,10 @@ export default function PerfumeDetail() {
         <button onClick={() => navigate(-1)}>← Back</button>
         {user && (
           <>
-            <button
-              onClick={() => handleCollection("owned")}
-              disabled={collectionLoading}>
+            <button onClick={() => handleCollection("owned")} disabled={collectionLoading}>
               {collectionStatus === "owned" ? "✓ Owned" : "Add to Owned"}
             </button>
-            <button
-              onClick={() => handleCollection("wishlisted")}
-              disabled={collectionLoading}>
+            <button onClick={() => handleCollection("wishlisted")} disabled={collectionLoading}>
               {collectionStatus === "wishlisted" ? "✓ Wishlisted" : "Wishlist"}
             </button>
           </>
@@ -135,9 +130,7 @@ export default function PerfumeDetail() {
         {perfume.year && <span>{perfume.year}</span>}
         {perfume.country && <span>{perfume.country}</span>}
         {perfume.ratingValue && (
-          <span>
-            ⭐ {perfume.ratingValue} ({perfume.ratingCount?.toLocaleString()} ratings)
-          </span>
+          <span>⭐ {perfume.ratingValue} ({perfume.ratingCount?.toLocaleString()} ratings)</span>
         )}
       </div>
 
@@ -146,10 +139,7 @@ export default function PerfumeDetail() {
           <h3>Accords</h3>
           <div className="tags">
             {perfume.accords.map((a) => (
-              <Link
-                key={a.accordId}
-                className="tag"
-                to={`/?accord=${encodeURIComponent(a.accord.name)}`}>
+              <Link key={a.accordId} className="tag" to={`/?accord=${encodeURIComponent(a.accord.name)}`}>
                 {a.accord.name}
               </Link>
             ))}
@@ -162,10 +152,7 @@ export default function PerfumeDetail() {
           <h3>Top Notes</h3>
           <div className="tags">
             {topNotes.map((n) => (
-              <Link
-                key={n.noteId}
-                className="tag"
-                to={`/?note=${encodeURIComponent(n.note.name)}`}>
+              <Link key={n.noteId} className="tag" to={`/?note=${encodeURIComponent(n.note.name)}`}>
                 {n.note.name}
               </Link>
             ))}
@@ -178,10 +165,7 @@ export default function PerfumeDetail() {
           <h3>Middle Notes</h3>
           <div className="tags">
             {middleNotes.map((n) => (
-              <Link
-                key={n.noteId}
-                className="tag"
-                to={`/?note=${encodeURIComponent(n.note.name)}`}>
+              <Link key={n.noteId} className="tag" to={`/?note=${encodeURIComponent(n.note.name)}`}>
                 {n.note.name}
               </Link>
             ))}
@@ -194,10 +178,7 @@ export default function PerfumeDetail() {
           <h3>Base Notes</h3>
           <div className="tags">
             {baseNotes.map((n) => (
-              <Link
-                key={n.noteId}
-                className="tag"
-                to={`/?note=${encodeURIComponent(n.note.name)}`}>
+              <Link key={n.noteId} className="tag" to={`/?note=${encodeURIComponent(n.note.name)}`}>
                 {n.note.name}
               </Link>
             ))}
@@ -219,16 +200,11 @@ export default function PerfumeDetail() {
         ) : similar.length > 0 ? (
           <div className="similar-grid">
             {similar.map((p) => (
-              <div
-                key={p.id}
-                className="card"
-                onClick={() => navigate(`/perfume/${p.id}`)}>
+              <div key={p.id} className="card" onClick={() => navigate(`/perfume/${p.id}`)}>
                 <div className="card-info">
                   <span className="card-name">{p.name}</span>
                   <span className="card-brand">{p.brand}</span>
-                  {p.accords[0] && (
-                    <span className="accord">{p.accords[0].accord.name}</span>
-                  )}
+                  {p.accords[0] && <span className="accord">{p.accords[0].accord.name}</span>}
                 </div>
               </div>
             ))}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth, authHeaders } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import API from "../lib/api";
 
@@ -13,7 +13,7 @@ export default function Collection() {
 
   useEffect(() => {
     if (!user) return;
-    fetch(`${API}/api/collection`, { credentials: "include" })
+    fetch(`${API}/api/collection`, { headers: { ...authHeaders() } })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch collection.");
         return res.json();
@@ -33,7 +33,7 @@ export default function Collection() {
     try {
       const res = await fetch(`${API}/api/collection/${perfumeId}`, {
         method: "DELETE",
-        credentials: "include",
+        headers: { ...authHeaders() },
       });
       if (!res.ok) throw new Error("Failed to remove item.");
       setEntries((prev) => prev.filter((e) => e.perfumeId !== perfumeId));
@@ -74,9 +74,7 @@ export default function Collection() {
                 <strong>{entry.perfume.name}</strong>
                 <span>{entry.perfume.brand}</span>
               </Link>
-              <button onClick={() => handleRemove(entry.perfumeId)}>
-                Remove
-              </button>
+              <button onClick={() => handleRemove(entry.perfumeId)}>Remove</button>
             </li>
           ))}
         </ul>

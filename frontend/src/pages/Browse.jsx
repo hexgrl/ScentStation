@@ -131,8 +131,20 @@ export default function Browse() {
         }
       }
     }}
-    placeholder="Go to page..."
+    placeholder="Page"
   />
+  <button
+    onClick={() => {
+      const p = Number(jumpPage)
+      if (p >= 1 && p <= totalPages) {
+        handlePage(p)
+        setJumpPage('')
+      }
+    }}
+    disabled={!jumpPage}
+  >
+    Go
+  </button>
 </div>
     </div>
   );

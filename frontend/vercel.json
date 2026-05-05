@@ -5,8 +5,12 @@
       "destination": "https://scentstation-production.up.railway.app/api/:path*"
     },
     {
-      "source": "/auth/:path*",
-      "destination": "https://scentstation-production.up.railway.app/auth/:path*"
+      "source": "/auth/google/:path*",
+      "destination": "https://scentstation-production.up.railway.app/auth/google/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

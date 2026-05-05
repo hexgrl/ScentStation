@@ -9,6 +9,14 @@
       "destination": "https://scentstation-production.up.railway.app/auth/google/:path*"
     },
     {
+      "source": "/auth/me",
+      "destination": "https://scentstation-production.up.railway.app/auth/me"
+    },
+    {
+      "source": "/auth/logout",
+      "destination": "https://scentstation-production.up.railway.app/auth/logout"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
